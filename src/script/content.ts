@@ -26,7 +26,7 @@ function getNickName(text: string): string{
 /* 发送登陆状态（用户名) */
 chrome.runtime.onMessage.addListener(
   function(request: { type: string }, sender: object, sendResponse: Function): void{
-    if(request.type === 'GET_NICK'){
+    if(request && request.type === 'GET_NICK'){
       /* 获取nick */
       const head: HTMLHeadElement = document.head;
       const script: HTMLCollectionOf<HTMLScriptElement> = head.getElementsByTagName('script');
@@ -41,7 +41,8 @@ chrome.runtime.onMessage.addListener(
 
       sendResponse({
         type: 'NICK',
-        nick
+        nick,
+        cookie: document.cookie
       });
     }
   }
