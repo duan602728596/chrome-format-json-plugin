@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "locale": "zh-CN",
+    "target": "ES2018",
+    "newLine": "LF"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

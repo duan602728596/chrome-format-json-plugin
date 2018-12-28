@@ -1,0 +1,27 @@
+manifest_version: 2
+name: test2
+version: 0.0.1
+description: 测试插件
+
+# 导航栏脚本
+browser_action:
+  default_popup: template/popup.html
+
+# 前端脚本注入
+content_scripts:
+  - matches:
+      - <all_urls>
+    js:
+      - script/content.js
+    run_at: document_end
+
+# 后台脚本注入
+background:
+  scripts:
+    - script/background.js
+
+# 权限
+permissions:
+  - cookies
+  - background
+  - '*://*/'
