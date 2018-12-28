@@ -1,6 +1,8 @@
 {
+  "name": "weibo-google-chrome-plugin",
+  "version": "0.0.1",
   "scripts": {
-    "start": "npm run cleanbuild && cross-env NODE_ENV=development gulp",
+    "dev": "npm run cleanbuild && cross-env NODE_ENV=development gulp",
     "cleanbuild": "rimraf ./build"
   },
   "devDependencies": {

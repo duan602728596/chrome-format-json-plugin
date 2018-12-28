@@ -25,3 +25,5 @@ permissions:
   - cookies
   - background
   - '*://*/'
+  # - '*://*.weibo.com/'
+  # - '*://*.weibo.cn/'

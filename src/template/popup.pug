@@ -2,5 +2,10 @@ doctype html
 html
   head
     meta(charset='utf-8')
+    link(rel='stylesheet' href='../style/popup.css')
   body
-    div hello
+    div.popup-box
+      // 显示用户是否登陆
+      div.popup-login-info#popup-login-info
+        h1.popup-login-info-username#popup-login-info-username 未登陆
+    script(src='../script/popup.js')
