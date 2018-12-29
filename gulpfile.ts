@@ -8,7 +8,7 @@ import * as pug from 'gulp-pug';
 import * as sass from 'gulp-sass';
 import * as typescript from 'gulp-typescript';
 import { ICompileStream } from 'gulp-typescript/release/project';
-import ReadWriteStream = NodeJS.ReadWriteStream;
+import { Stream } from 'stream';
 import * as tsconfig from './tsconfig.json';
 
 const isDev: boolean = process.env.NODE_ENV === 'development';
@@ -33,21 +33,10 @@ const pathFile: {
   json: 'build/**/*.json',
   build: 'build'
 };
-const typescriptConfig: {
-  alwaysStrict: boolean,
-  locale: string,
-  target: string,
-  newLine: string
-} = {
-  alwaysStrict: true,
-  locale: 'zh-CN',
-  target: 'ES2018',
-  newLine: 'LF'
-};
 
 /* 开发环境编译 */
 // pug
-function devPugProject(): ReadWriteStream{
+function devPugProject(): Stream{
   return gulp.src(pathFile.pug)
     .pipe(changed(pathFile.html))
     .pipe(plumber())
@@ -56,7 +45,7 @@ function devPugProject(): ReadWriteStream{
 }
 
 // sass
-function devSassProject(): ReadWriteStream{
+function devSassProject(): Stream{
   return gulp.src(pathFile.sass)
     .pipe(changed(pathFile.css))
     .pipe(plumber())
@@ -65,7 +54,7 @@ function devSassProject(): ReadWriteStream{
 }
 
 // typescript
-function devTypescriptProject(): ReadWriteStream{
+function devTypescriptProject(): Stream{
   const result: ICompileStream = gulp.src(pathFile.typescript)
     .pipe(changed(pathFile.js))
     .pipe(plumber())
@@ -75,7 +64,7 @@ function devTypescriptProject(): ReadWriteStream{
 }
 
 // yaml
-function devYamlProject(): ReadWriteStream{
+function devYamlProject(): Stream{
   return gulp.src(pathFile.yaml)
     .pipe(changed(pathFile.json))
     .pipe(plumber())
@@ -95,21 +84,21 @@ function devWatch(): void{
 
 /* 生产环境编译 */
 // pug
-function proPugProject(): ReadWriteStream{
+function proPugProject(): Stream{
   return gulp.src(pathFile.pug)
     .pipe(pug())
     .pipe(gulp.dest(pathFile.build));
 }
 
 // sass
-function proSassProject(): ReadWriteStream{
+function proSassProject(): Stream{
   return gulp.src(pathFile.sass)
     .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
     .pipe(gulp.dest(pathFile.build));
 }
 
 // typescript
-function proTypescriptProject(): ReadWriteStream{
+function proTypescriptProject(): Stream{
   const result: ICompileStream = gulp.src(pathFile.typescript)
     .pipe(typescript(tsconfig.compilerOptions));
 
@@ -119,7 +108,7 @@ function proTypescriptProject(): ReadWriteStream{
 }
 
 // yaml
-function proYamlProject(): ReadWriteStream{
+function proYamlProject(): Stream{
   return gulp.src(pathFile.yaml)
     .pipe(yaml({ space: 2 }))
     .pipe(gulp.dest(pathFile.build));
