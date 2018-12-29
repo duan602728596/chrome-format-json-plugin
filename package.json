@@ -7,7 +7,6 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.76",
-    "@types/gulp": "^4.0.5",
     "@types/node": "^10.12.18",
     "cross-env": "^5.2.0",
     "gulp": "^4.0.0",

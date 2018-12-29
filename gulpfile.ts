@@ -1,6 +1,5 @@
 import * as process from 'process';
 import * as gulp from 'gulp';
-import { Gulp } from "gulp";
 import * as changed from 'gulp-changed';
 import * as plumber from 'gulp-plumber';
 import * as terser from 'gulp-terser';
@@ -8,6 +7,9 @@ import * as yaml from 'gulp-yaml';
 import * as pug from 'gulp-pug';
 import * as sass from 'gulp-sass';
 import * as typescript from 'gulp-typescript';
+import { ICompileStream } from 'gulp-typescript/release/project';
+import ReadWriteStream = NodeJS.ReadWriteStream;
+import * as tsconfig from './tsconfig.json';
 
 const isDev: boolean = process.env.NODE_ENV === 'development';
 const pathFile: {
@@ -45,7 +47,7 @@ const typescriptConfig: {
 
 /* 开发环境编译 */
 // pug
-function devPugProject(): Gulp{
+function devPugProject(): ReadWriteStream{
   return gulp.src(pathFile.pug)
     .pipe(changed(pathFile.html))
     .pipe(plumber())
@@ -54,7 +56,7 @@ function devPugProject(): Gulp{
 }
 
 // sass
-function devSassProject(): Gulp{
+function devSassProject(): ReadWriteStream{
   return gulp.src(pathFile.sass)
     .pipe(changed(pathFile.css))
     .pipe(plumber())
@@ -63,17 +65,17 @@ function devSassProject(): Gulp{
 }
 
 // typescript
-function devTypescriptProject(): Gulp{
-  const result = gulp.src(pathFile.typescript)
+function devTypescriptProject(): ReadWriteStream{
+  const result: ICompileStream = gulp.src(pathFile.typescript)
     .pipe(changed(pathFile.js))
     .pipe(plumber())
-    .pipe(typescript(typescriptConfig));
+    .pipe(typescript(tsconfig.compilerOptions));
 
   return result.js.pipe(gulp.dest(pathFile.build));
 }
 
 // yaml
-function devYamlProject(): Gulp{
+function devYamlProject(): ReadWriteStream{
   return gulp.src(pathFile.yaml)
     .pipe(changed(pathFile.json))
     .pipe(plumber())
@@ -93,26 +95,23 @@ function devWatch(): void{
 
 /* 生产环境编译 */
 // pug
-function proPugProject(): Gulp{
+function proPugProject(): ReadWriteStream{
   return gulp.src(pathFile.pug)
-    .pipe(changed(pathFile.html))
     .pipe(pug())
     .pipe(gulp.dest(pathFile.build));
 }
 
 // sass
-function proSassProject(): Gulp{
+function proSassProject(): ReadWriteStream{
   return gulp.src(pathFile.sass)
-    .pipe(changed(pathFile.css))
     .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
     .pipe(gulp.dest(pathFile.build));
 }
 
 // typescript
-function proTypescriptProject(): Gulp{
-  const result = gulp.src(pathFile.typescript)
-    .pipe(changed(pathFile.js))
-    .pipe(typescript(typescriptConfig));
+function proTypescriptProject(): ReadWriteStream{
+  const result: ICompileStream = gulp.src(pathFile.typescript)
+    .pipe(typescript(tsconfig.compilerOptions));
 
   return result.js
     .pipe(terser())
@@ -120,9 +119,8 @@ function proTypescriptProject(): Gulp{
 }
 
 // yaml
-function proYamlProject(): Gulp{
+function proYamlProject(): ReadWriteStream{
   return gulp.src(pathFile.yaml)
-    .pipe(changed(pathFile.json))
     .pipe(yaml({ space: 2 }))
     .pipe(gulp.dest(pathFile.build));
 }
