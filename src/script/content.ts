@@ -1,49 +1,83 @@
-/* 获取用户昵称 */
-function getNickName(text: string): string{
-  if(/var \$CONFIG = {};/.test(text)){
-    const textArr: string[] = text.split(/\n/g);
-    let nickName: string = null;
+declare var hljs: {
+  highlightBlock: Function
+};
 
-    for(const item of textArr){
-      if(/\$CONFIG\['nick'\]/.test(item)){
-        nickName = item;
-        break;
-      }
-    }
-
-    if(nickName){
-      nickName = nickName.split('=')[1]
-        .replace(/^'/, '')
-        .replace(/';\s*$/, '');
-    }
-
-    return nickName;
-  }else{
-    return null;
+/* 监听信息 */
+chrome.runtime.onMessage.addListener(function(request: { type: string }, sender: object, sendResponse: Function): void{
+  if(request && request.type === 'FORMAT_JSON'){
+    formatJSON();
   }
+});
+
+/* 注入css */
+function injectCSS(): Promise<void>{
+  const style: string = 'https://cdn.bootcss.com/highlight.js/7.3/styles/github.min.css';
+
+  return new Promise((resolve: Function, reject: Function): void=>{
+    let element: HTMLLinkElement = document.createElement('link');
+
+    element.id = 'highlight-css';
+    element.rel = 'stylesheet';
+    element.href = style;
+
+    element.addEventListener('load', function(event: Event): void{
+      console.log('Load css.');
+      resolve();
+    }, false);
+
+    document.head.appendChild(element);
+    element = null;
+  });
 }
 
-/* 发送登陆状态（用户名) */
-chrome.runtime.onMessage.addListener(
-  function(request: { type: string }, sender: object, sendResponse: Function): void{
-    if(request && request.type === 'GET_NICK'){
-      /* 获取nick */
-      const head: HTMLHeadElement = document.head;
-      const script: HTMLCollectionOf<HTMLScriptElement> = head.getElementsByTagName('script');
-      let nick: string = null;
+/* 注入js */
+function injectJS(): Promise<void>{
+  const script: string = 'https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js';
 
-      for(let i: number = script.length - 1; i >= 0; i--){
-        const text: string = script[i].innerText;
+  return new Promise((resolve: Function, reject: Function): void=>{
+    let element: HTMLScriptElement = document.createElement('script');
 
-        nick = getNickName(text);
-        if(nick) break;
-      }
+    element.id = 'highlight-js';
+    element.src = script;
 
-      sendResponse({
-        type: 'NICK',
-        nick,
-        cookie: document.cookie
-      });
+    element.addEventListener('load', function(event: Event): void{
+      console.log('Load js.');
+      resolve();
+    }, false);
+
+    document.body.appendChild(element);
+    element = null;
+  });
+}
+
+/* 格式化JSON */
+async function formatJSON(): Promise<void>{
+  const css: Element = document.getElementById('highlight-css');
+  const js: Element = document.getElementById('highlight-js');
+  const code: Element = document.getElementById('highlight-code');
+  const preRawString: HTMLCollectionOf<HTMLPreElement> = document.body.getElementsByTagName('pre');
+
+  // 加载cdn
+  if(!css) await injectCSS();
+  if(!js) await injectJS();
+
+  if(preRawString.length > 0){
+    const jsonStr: string = preRawString[0].innerHTML;
+    let element: Element = code;
+
+    if(!code){
+      element = document.createElement('pre');
+      element.id = 'highlight-code';
+      element.className = 'json';
+      element.innerHTML = JSON.stringify(JSON.parse(jsonStr), null, 2);
+
+      document.body.appendChild(element);
+      element = null;
     }
+
+    element = document.getElementById('highlight-code');
+    preRawString[0].style.display = 'none';
+
+    setTimeout((): void => window['hljs'].highlightBlock(element), 3000);
   }
-);
+}

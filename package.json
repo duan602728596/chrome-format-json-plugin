@@ -1,12 +1,22 @@
 {
-  "name": "weibo-google-chrome-plugin",
+  "name": "chrome-format-json-plugin",
   "version": "0.0.1",
+  "description": "谷歌浏览器，格式化json的插件。",
+  "license": "MIT",
+  "author": {
+    "name": "段昊辰",
+    "email": "duanhaochen@126.com",
+    "url": "https://github.com/duan602728596"
+  },
   "scripts": {
     "dev": "npm run cleanbuild && cross-env NODE_ENV=development gulp",
-    "cleanbuild": "rimraf ./build"
+    "cleanbuild": "rimraf ./build",
+    "update": "milktea update"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.76",
+    "@sweet/milktea-cli": "github:duan602728596/sweet#build-milktea-cli",
+    "@sweet/util-tools": "github:duan602728596/sweet#build-util-tools",
+    "@types/chrome": "^0.0.78",
     "@types/node": "^10.12.18",
     "cross-env": "^5.2.0",
     "gulp": "^4.0.0",
@@ -14,15 +24,15 @@
     "gulp-plumber": "^1.2.1",
     "gulp-pug": "^4.0.1",
     "gulp-sass": "^4.0.2",
-    "gulp-terser": "^1.1.6",
+    "gulp-terser": "^1.1.7",
     "gulp-typescript": "^5.0.0",
-    "gulp-yaml": "^2.0.2",
+    "gulp-yaml": "^2.0.3",
     "node-sass": "^4.11.0",
     "pug": "^2.0.3",
-    "rimraf": "^2.6.2",
-    "terser": "^3.13.1",
-    "ts-node": "^7.0.1",
-    "tslint": "^5.12.0",
-    "typescript": "^3.2.2"
+    "rimraf": "^2.6.3",
+    "terser": "^3.14.1",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "typescript": "^3.2.4"
   }
 }

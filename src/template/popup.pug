@@ -1,13 +1,10 @@
 doctype html
 html
   head
-    meta(charset='utf-8')
+    meta(charset='utf8')
     link(rel='stylesheet' href='../style/popup.css')
   body
     div.popup-box
-      // 显示用户是否登陆
-      div.popup-login-info#popup-login-info
-        h1.popup-login-info-username#popup-login-info-username 未登陆
-      // 表格
-      table.popup-list
+      button#formatJSON(type='button') 格式化JSON
+      button.ml-10#reset(type='button') 还原
     script(src='../script/popup.js')

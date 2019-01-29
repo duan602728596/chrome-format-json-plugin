@@ -1,9 +1,9 @@
 manifest_version: 2
-name: test2
+name: JSON格式化
 version: 0.0.1
-description: 测试插件
+description: 谷歌浏览器，格式化JSON的插件。
 
-# 导航栏脚本
+# 导航栏
 browser_action:
   default_popup: template/popup.html
 
@@ -14,15 +14,3 @@ content_scripts:
     js:
       - script/content.js
     run_at: document_end
-
-# 后台脚本注入
-background:
-  scripts:
-    - script/background.js
-
-# 权限
-permissions:
-  - background
-  - cookies
-  - '*://*.weibo.com/'
-  - '*://*.weibo.cn/'
