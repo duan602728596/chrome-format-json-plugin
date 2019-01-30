@@ -2,9 +2,24 @@ manifest_version: 2
 name: JSON格式化
 version: 0.0.1
 description: 谷歌浏览器，格式化JSON的插件。
+author: 段昊辰
+homepage_url: 'https://github.com/duan602728596/chrome-format-json-plugin'
+
+# 图标
+# icons:
+#   16: ''
+#   48: ''
+#   128: ''
+
+# 权限
+permissions:
+  - tabs
+  - '*://*/'
 
 # 导航栏
 browser_action:
+  default_title: JSON格式化
+  # default_icon: ''
   default_popup: template/popup.html
 
 # 前端脚本注入

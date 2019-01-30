@@ -17,20 +17,26 @@ const pathFile: {
   sass: string,
   typescript: string,
   yaml: string,
+  dependencies: string,
   html: string,
   css: string,
   js: string,
   json: string,
+  dependenciesFile: string,
+  dependenciesBuild: string,
   build: string
 } = {
   pug: 'src/**/*.pug',
   sass: 'src/**/*.sass',
   typescript: 'src/**/*.ts',
   yaml: 'src/**/*.yml',
+  dependencies: 'src/dependencies/**/*.*',
   html: 'build/**/*.html',
   css: 'build/**/*.css',
   js: 'build/**/*.js',
   json: 'build/**/*.json',
+  dependenciesFile: 'build/dependencies/**/*.*',
+  dependenciesBuild: 'build/dependencies',
   build: 'build'
 };
 
@@ -49,7 +55,7 @@ function devSassProject(): Stream{
   return gulp.src(pathFile.sass)
     .pipe(changed(pathFile.css))
     .pipe(plumber())
-    .pipe(sass({ outputStyle: 'compact' }).on('error', sass.logError))
+    .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest(pathFile.build));
 }
 
@@ -114,6 +120,13 @@ function proYamlProject(): Stream{
     .pipe(gulp.dest(pathFile.build));
 }
 
+/* 拷贝文件 */
+function copyDependencies(): Stream{
+  return gulp.src(pathFile.dependencies)
+    .pipe(changed(pathFile.dependenciesFile))
+    .pipe(gulp.dest(pathFile.dependenciesBuild));
+}
+
 export default isDev
-  ? gulp.series(gulp.parallel(devPugProject, devSassProject, devTypescriptProject, devYamlProject), devWatch)
-  : gulp.parallel(proPugProject, proSassProject, proTypescriptProject, proYamlProject);
+  ? gulp.series(gulp.parallel(devPugProject, devSassProject, devTypescriptProject, devYamlProject, copyDependencies), devWatch)
+  : gulp.parallel(proPugProject, proSassProject, proTypescriptProject, proYamlProject, copyDependencies);

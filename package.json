@@ -10,6 +10,7 @@
   },
   "scripts": {
     "dev": "npm run cleanbuild && cross-env NODE_ENV=development gulp",
+    "build": "npm run cleanbuild && cross-env NODE_ENV=production gulp",
     "cleanbuild": "rimraf ./build",
     "update": "milktea update"
   },
@@ -27,6 +28,7 @@
     "gulp-terser": "^1.1.7",
     "gulp-typescript": "^5.0.0",
     "gulp-yaml": "^2.0.3",
+    "highlightjs": "^9.12.0",
     "node-sass": "^4.11.0",
     "pug": "^2.0.3",
     "rimraf": "^2.6.3",
