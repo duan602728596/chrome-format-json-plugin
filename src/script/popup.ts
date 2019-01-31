@@ -32,17 +32,13 @@ function injectJS(): Promise<void>{
 
 /* 格式化JSON */
 async function handleFormatJSONClick(event: Event): Promise<void>{
-  try{
-    // 加载cdn
-    if(js === false) await injectJS();
-    if(css === false) await injectCSS();
+  // 加载cdn
+  if(js === false) await injectJS();
+  if(css === false) await injectCSS();
 
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs: Tab[]): void{
-      chrome.tabs.sendMessage(tabs[0].id, { type: 'FORMAT_JSON' });
-    });
-  }catch(err){
-    console.error(err);
-  }
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs: Tab[]): void{
+    chrome.tabs.sendMessage(tabs[0].id, { type: 'FORMAT_JSON' });
+  });
 }
 
 formatJSONBtn.addEventListener('click', handleFormatJSONClick, false);

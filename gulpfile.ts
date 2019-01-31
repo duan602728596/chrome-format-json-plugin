@@ -16,28 +16,41 @@ const pathFile: {
   pug: string,
   sass: string,
   typescript: string,
+  image: string,
   yaml: string,
   dependencies: string,
   html: string,
   css: string,
   js: string,
+  imageFile: string,
   json: string,
   dependenciesFile: string,
+  build: string,
+  pugBuild: string,
+  sassBuild: string,
+  typescriptBuild: string,
+  imageBuild: string,
   dependenciesBuild: string,
-  build: string
 } = {
-  pug: 'src/**/*.pug',
-  sass: 'src/**/*.sass',
-  typescript: 'src/**/*.ts',
+  pug: 'src/template/**/*.pug',
+  sass: 'src/style/**/*.sass',
+  typescript: 'src/script/**/*.ts',
+  image: 'src/image/**/*.*',
   yaml: 'src/**/*.yml',
   dependencies: 'src/dependencies/**/*.*',
-  html: 'build/**/*.html',
-  css: 'build/**/*.css',
-  js: 'build/**/*.js',
+  html: 'build/template/**/*.html',
+  css: 'build/style/**/*.css',
+  js: 'build/script/**/*.js',
+  imageFile: 'build/script/**/*.*',
   json: 'build/**/*.json',
   dependenciesFile: 'build/dependencies/**/*.*',
-  dependenciesBuild: 'build/dependencies',
-  build: 'build'
+  build: 'build',
+  pugBuild: 'build/template',
+  sassBuild: 'build/style',
+  typescriptBuild: 'build/script',
+  imageBuild: 'build/image',
+  dependenciesBuild: 'build/dependencies'
+
 };
 
 /* 开发环境编译 */
@@ -47,7 +60,7 @@ function devPugProject(): Stream{
     .pipe(changed(pathFile.html))
     .pipe(plumber())
     .pipe(pug({ pretty: true }))
-    .pipe(gulp.dest(pathFile.build))
+    .pipe(gulp.dest(pathFile.pugBuild))
 }
 
 // sass
@@ -56,7 +69,7 @@ function devSassProject(): Stream{
     .pipe(changed(pathFile.css))
     .pipe(plumber())
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest(pathFile.build));
+    .pipe(gulp.dest(pathFile.sassBuild));
 }
 
 // typescript
@@ -66,7 +79,7 @@ function devTypescriptProject(): Stream{
     .pipe(plumber())
     .pipe(typescript(tsconfig.compilerOptions));
 
-  return result.js.pipe(gulp.dest(pathFile.build));
+  return result.js.pipe(gulp.dest(pathFile.typescriptBuild));
 }
 
 // yaml
@@ -93,14 +106,14 @@ function devWatch(): void{
 function proPugProject(): Stream{
   return gulp.src(pathFile.pug)
     .pipe(pug())
-    .pipe(gulp.dest(pathFile.build));
+    .pipe(gulp.dest(pathFile.pugBuild));
 }
 
 // sass
 function proSassProject(): Stream{
   return gulp.src(pathFile.sass)
     .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
-    .pipe(gulp.dest(pathFile.build));
+    .pipe(gulp.dest(pathFile.sassBuild));
 }
 
 // typescript
@@ -110,7 +123,7 @@ function proTypescriptProject(): Stream{
 
   return result.js
     .pipe(terser())
-    .pipe(gulp.dest(pathFile.build));
+    .pipe(gulp.dest(pathFile.typescriptBuild));
 }
 
 // yaml
@@ -120,7 +133,14 @@ function proYamlProject(): Stream{
     .pipe(gulp.dest(pathFile.build));
 }
 
-/* 拷贝文件 */
+/* 拷贝图片 */
+function copyImage(): Stream{
+  return gulp.src(pathFile.image)
+    .pipe(changed(pathFile.imageFile))
+    .pipe(gulp.dest(pathFile.imageBuild));
+}
+
+/* 拷贝依赖文件 */
 function copyDependencies(): Stream{
   return gulp.src(pathFile.dependencies)
     .pipe(changed(pathFile.dependenciesFile))
@@ -128,5 +148,5 @@ function copyDependencies(): Stream{
 }
 
 export default isDev
-  ? gulp.series(gulp.parallel(devPugProject, devSassProject, devTypescriptProject, devYamlProject, copyDependencies), devWatch)
-  : gulp.parallel(proPugProject, proSassProject, proTypescriptProject, proYamlProject, copyDependencies);
+  ? gulp.series(gulp.parallel(devPugProject, devSassProject, devTypescriptProject, devYamlProject, copyImage, copyDependencies), devWatch)
+  : gulp.parallel(proPugProject, proSassProject, proTypescriptProject, proYamlProject, copyImage, copyDependencies);

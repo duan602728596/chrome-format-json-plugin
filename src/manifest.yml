@@ -6,10 +6,10 @@ author: 段昊辰
 homepage_url: 'https://github.com/duan602728596/chrome-format-json-plugin'
 
 # 图标
-# icons:
-#   16: ''
-#   48: ''
-#   128: ''
+icons:
+  16: image/icon_32x32.png
+  48: image/icon_96x96.png
+  128: image/icon_256x256.png
 
 # 权限
 permissions:
@@ -19,7 +19,9 @@ permissions:
 # 导航栏
 browser_action:
   default_title: JSON格式化
-  # default_icon: ''
+  default_icon:
+    19: image/default-icon_38x38.png
+    38: image/default-icon_76x76.png
   default_popup: template/popup.html
 
 # 前端脚本注入
