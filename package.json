@@ -12,7 +12,7 @@
     "dev": "npm run clean:build && cross-env NODE_ENV=development gulp",
     "build": "npm run clean:build && cross-env NODE_ENV=production gulp",
     "clean:build": "rimraf ./build",
-    "eslint": "eslint ./packages --ext .js,.jsx,.ts,.tsx --fix",
+    "eslint": "eslint ./ --ext .js,.jsx,.ts,.tsx --fix",
     "tslint": "tslint --project ./ --fix",
     "update": "milktea update"
   },
