@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "npm run clean:build && cross-env NODE_ENV=development gulp",
     "build": "npm run clean:build && cross-env NODE_ENV=production gulp",
-    "clean:build": "rimraf ./build",
+    "clean:build": "rimraf ./dist",
     "eslint": "eslint ./ --ext .js,.jsx,.ts,.tsx --fix",
     "tslint": "tslint --project ./ --fix",
     "update": "milktea update"
@@ -19,11 +19,11 @@
   "devDependencies": {
     "@babel/core": "^7.3.3",
     "@babel/preset-typescript": "^7.3.3",
-    "@sweet/milktea-cli": "github:duan602728596/sweet#build-milktea-cli",
-    "@sweet/util-tools": "github:duan602728596/sweet#build-util-tools",
+    "@sweet-milktea/milktea-cli": "^0.3.7",
+    "@sweet-milktea/util-tools": "^0.3.6",
     "@types/chrome": "^0.0.81",
     "@types/node": "^11.9.4",
-    "babel-eslint": "^11.0.0-beta.0",
+    "babel-eslint": "^10.0.2",
     "commitizen": "^3.0.5",
     "cross-env": "^5.2.0",
     "cz-conventional-changelog": "^2.1.0",

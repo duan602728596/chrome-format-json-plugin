@@ -38,18 +38,18 @@ const pathFile: {
   image: 'src/image/**/*.*',
   yaml: 'src/**/*.yml',
   dependencies: 'src/dependencies/**/*.*',
-  html: 'build/template/**/*.html',
-  css: 'build/style/**/*.css',
-  js: 'build/script/**/*.js',
-  imageFile: 'build/script/**/*.*',
-  json: 'build/**/*.json',
-  dependenciesFile: 'build/dependencies/**/*.*',
-  build: 'build',
-  pugBuild: 'build/template',
-  sassBuild: 'build/style',
-  typescriptBuild: 'build/script',
-  imageBuild: 'build/image',
-  dependenciesBuild: 'build/dependencies'
+  html: 'dist/template/**/*.html',
+  css: 'dist/style/**/*.css',
+  js: 'dist/script/**/*.js',
+  imageFile: 'dist/script/**/*.*',
+  json: 'dist/**/*.json',
+  dependenciesFile: 'dist/dependencies/**/*.*',
+  build: 'dist',
+  pugBuild: 'dist/template',
+  sassBuild: 'dist/style',
+  typescriptBuild: 'dist/script',
+  imageBuild: 'dist/image',
+  dependenciesBuild: 'dist/dependencies'
 
 };
 
